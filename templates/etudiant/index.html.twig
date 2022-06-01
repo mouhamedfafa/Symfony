@@ -1,0 +1,51 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ClasseController!{% endblock %}
+
+{% block body %}
+<div class="card ml-5">
+    <div class="card-body">
+        <h4 class="card-title">Liste des Etudiants</h4>
+        <p class="card-text">
+        <table class="table">
+            <thead>
+                <tr>
+                <th scope="col">id</th>
+                <th scope="col">Nom Complet</th>
+                <th scope="col">Adresse</th>
+                <th scope="col">matricule</th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+       {% for etu in etudiant %}
+       
+             <tr>
+             <td>{{etu.id}}</td>
+             <td>{{etu.nomComplet}}</td>
+             <td>{{etu.adresse}}</td>
+             <td>{{etu.matricule}}</td>
+
+             <td> <button type='button' class='btn btn-outline-danger'>supprimer</button> &nbsp <button type='button' class='btn btn-outline-success'>editer</button> <td>
+
+            </tr>
+{% endfor %}
+               
+            </tbody>
+        </table>
+        </p>
+             <div class="d-flex" justify-content-center style="margin-left:50rem" >
+        {%  do etudiant.setPageRange(10) %}
+               {{ knp_pagination_render(etudiant,'pagination.html.twig') }}
+        </div>
+    </div>
+</div>
+
+
+              
+
+{% endblock %}
+
+
