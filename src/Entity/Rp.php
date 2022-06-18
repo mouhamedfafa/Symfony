@@ -8,70 +8,77 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RpRepository::class)]
-class Rp extends Personne
+class Rp extends User
 {
-    
-
     #[ORM\OneToMany(mappedBy: 'rp', targetEntity: Classe::class)]
-    private $Rp;
+    private $classes;
 
-    #[ORM\ManyToOne(targetEntity: Classe::class, inversedBy: 'classes')]
-    private $classe;
-
-    
+    #[ORM\OneToMany(mappedBy: 'rp', targetEntity: Demande::class)]
+    private $demandes;
 
     public function __construct()
     {
-        $this->Rp = new ArrayCollection();
-        $this->professeurs = new ArrayCollection();
+        $this->classes = new ArrayCollection();
+        $this->demandes = new ArrayCollection();
     }
-
-    
 
     /**
      * @return Collection<int, Classe>
      */
-    public function getRp(): Collection
+    public function getClasses(): Collection
     {
-        return $this->Rp;
+        return $this->classes;
     }
 
-    public function addRp(Classe $rp): self
+    public function addClass(Classe $class): self
     {
-        if (!$this->Rp->contains($rp)) {
-            $this->Rp[] = $rp;
-            $rp->setRp($this);
+        if (!$this->classes->contains($class)) {
+            $this->classes[] = $class;
+            $class->setRp($this);
         }
 
         return $this;
     }
 
-    public function removeRp(Classe $rp): self
+    public function removeClass(Classe $class): self
     {
-        if ($this->Rp->removeElement($rp)) {
+        if ($this->classes->removeElement($class)) {
             // set the owning side to null (unless already changed)
-            if ($rp->getRp() === $this) {
-                $rp->setRp(null);
+            if ($class->getRp() === $this) {
+                $class->setRp(null);
             }
         }
 
         return $this;
     }
 
-    public function getClasse(): ?Classe
+    /**
+     * @return Collection<int, Demande>
+     */
+    public function getDemandes(): Collection
     {
-        return $this->classe;
+        return $this->demandes;
     }
 
-    public function setClasse(?Classe $classe): self
+    public function addDemande(Demande $demande): self
     {
-        $this->classe = $classe;
+        if (!$this->demandes->contains($demande)) {
+            $this->demandes[] = $demande;
+            $demande->setRp($this);
+        }
 
         return $this;
     }
 
-    
+    public function removeDemande(Demande $demande): self
+    {
+        if ($this->demandes->removeElement($demande)) {
+            // set the owning side to null (unless already changed)
+            if ($demande->getRp() === $this) {
+                $demande->setRp(null);
+            }
+        }
 
-
-  
+        return $this;
+    }
 }

@@ -12,6 +12,7 @@ class EtudiantFixtures extends Fixture
     {
         // $product = new Product();
         // $manager->persist($product);
+        
 
         
         $sexes=["Hom", "Fem"];
@@ -42,7 +43,7 @@ $str=$nomcomplet[$nomRand];
             for ($j=0; $j < 2; $j++) { 
                 # code...
                 $ref=rand(0,9); 
-                $etu->setClasse($this->getReference('classe'.$ref));
+                // $etu->setClasse($this->getReference('classe'.$ref));
             }
             $manager->persist($etu);
 

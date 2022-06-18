@@ -34,7 +34,6 @@ class ProfesseurFixtures extends Fixture
 
             $prof= new Professeur();
             
-            
             $prof->setNomComplet( $nomcomplet[$nomRand]);
             $prof->setAdresse($adresse[$adresseRand]);
             $prof->setSexe($sexes[$sexeRand] );
@@ -42,7 +41,7 @@ class ProfesseurFixtures extends Fixture
             for ($j=0; $j < 2; $j++) { 
                 # code...
                 $ref=rand(0,9); 
-                $prof->addProfclass($this->getReference('classe'.$ref));
+                $prof->addClass($this->getReference('classe'.$ref));
             }
             $manager->persist($prof);
 

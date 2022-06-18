@@ -15,12 +15,18 @@ class AnneScolaire
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\OneToMany(mappedBy: 'anneScolaire', targetEntity: Inscription::class)]
-    private $AnneScolaire;
+    #[ORM\OneToMany(mappedBy: 'anneeScolaire', targetEntity: Inscription::class)]
+    private $inscriptions;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $libelle_anne;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $etat;
 
     public function __construct()
     {
-        $this->AnneScolaire = new ArrayCollection();
+        $this->inscriptions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -31,30 +37,55 @@ class AnneScolaire
     /**
      * @return Collection<int, Inscription>
      */
-    public function getAnneScolaire(): Collection
+    public function getInscriptions(): Collection
     {
-        return $this->AnneScolaire;
+        return $this->inscriptions;
     }
 
-    public function addAnneScolaire(Inscription $anneScolaire): self
+    public function addInscription(Inscription $inscription): self
     {
-        if (!$this->AnneScolaire->contains($anneScolaire)) {
-            $this->AnneScolaire[] = $anneScolaire;
-            $anneScolaire->setAnneScolaire($this);
+        if (!$this->inscriptions->contains($inscription)) {
+            $this->inscriptions[] = $inscription;
+            $inscription->setAnneeScolaire($this);
         }
 
         return $this;
     }
 
-    public function removeAnneScolaire(Inscription $anneScolaire): self
+    public function removeInscription(Inscription $inscription): self
     {
-        if ($this->AnneScolaire->removeElement($anneScolaire)) {
+        if ($this->inscriptions->removeElement($inscription)) {
             // set the owning side to null (unless already changed)
-            if ($anneScolaire->getAnneScolaire() === $this) {
-                $anneScolaire->setAnneScolaire(null);
+            if ($inscription->getAnneeScolaire() === $this) {
+                $inscription->setAnneeScolaire(null);
             }
         }
 
         return $this;
     }
+
+    public function getLibelleAnne(): ?string
+    {
+        return $this->libelle_anne;
+    }
+
+    public function setLibelleAnne(string $libelle_anne): self
+    {
+        $this->libelle_anne = $libelle_anne;
+
+        return $this;
+    }
+
+    public function getEtat(): ?string
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(string $etat): self
+    {
+        $this->etat = $etat;
+
+        return $this;
+    }
+
 }

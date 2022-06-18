@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PersonneRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\InheritanceType;
@@ -23,14 +24,15 @@ use Doctrine\ORM\Mapping\DiscriminatorMap;
     #[ORM\Column(type: 'integer')]
     private $id;
 
+    #[Assert\NotBlank(message:'Ce champs Ne peut pas etre pas vide')]
     #[ORM\Column(type: 'string', length: 30)]
+    #[Assert\Length( min:4,max: 12, minMessage: "Mot de passe trop court")]
     private $nomComplet;
 
-
-   
     #[ORM\Column(type: 'string', length: 10, nullable: true)]
     private $sexe;
 
+    #[Assert\Length( min: 4,max: 13, minMessage: 'Mot de passe trop court ',maxMessage: 'trop long mot de passe')]
     #[ORM\Column(type: 'string', length: 15, nullable: true)]
     private $adresse;
 

@@ -10,39 +10,26 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ProfesseurRepository::class)]
 class Professeur extends Personne
 {
-   
-    
-
-    #[ORM\ManyToOne(targetEntity: Rp::class, inversedBy: 'professeurs')]
-    private $Professeur;
-
-    #[ORM\ManyToMany(targetEntity: Classe::class, mappedBy: 'classprof')]
-    private $profclass;
-
-   
 
     #[ORM\Column(type: 'string', length: 15)]
     private $grade;
 
-    #[ORM\OneToMany(mappedBy: 'professeur', targetEntity: Module::class)]
-    private $module;
+    #[ORM\ManyToMany(targetEntity: Classe::class, inversedBy: 'professeurs')]
+    private $classes;
 
-  
+    #[ORM\ManyToMany(targetEntity: Module::class, inversedBy: 'professeurs')]
+    private $modules;
 
     public function __construct()
     {
+        $this->classes = new ArrayCollection();
         $this->modules = new ArrayCollection();
-        $this->profclass = new ArrayCollection();
-        $this->module = new ArrayCollection();
-      
     }
 
- 
-
- public function getGrade()
-                            {
-                                return $this->grade;
-                            }
+    public function getGrade()
+    {
+        return $this->grade;
+    }
 
     /**
      * Set the value of grade
@@ -55,54 +42,43 @@ class Professeur extends Personne
 
         return $this;
     }
-    
-
-    
 
     /**
      * @return Collection<int, Classe>
      */
-
-    /**
-     * @return Collection<int, Classe>
-     */
-    public function getProfclass(): Collection
+    public function getClasses(): Collection
     {
-        return $this->profclass;
+        return $this->classes;
     }
 
-    public function addProfclass(Classe $profclass): self
+    public function addClass(Classe $class): self
     {
-        if (!$this->profclass->contains($profclass)) {
-            $this->profclass[] = $profclass;
-            $profclass->addClassprof($this);
+        if (!$this->classes->contains($class)) {
+            $this->classes[] = $class;
         }
 
         return $this;
     }
 
-    public function removeProfclass(Classe $profclass): self
+    public function removeClass(Classe $class): self
     {
-        if ($this->profclass->removeElement($profclass)) {
-            $profclass->removeClassprof($this);
-        }
+        $this->classes->removeElement($class);
 
-        return $this;   
+        return $this;
     }
 
     /**
      * @return Collection<int, Module>
      */
-    public function getModule(): Collection
+    public function getModules(): Collection
     {
-        return $this->module;
+        return $this->modules;
     }
 
     public function addModule(Module $module): self
     {
-        if (!$this->module->contains($module)) {
-            $this->module[] = $module;
-            $module->setProfesseur($this);
+        if (!$this->modules->contains($module)) {
+            $this->modules[] = $module;
         }
 
         return $this;
@@ -110,16 +86,10 @@ class Professeur extends Personne
 
     public function removeModule(Module $module): self
     {
-        if ($this->module->removeElement($module)) {
-            // set the owning side to null (unless already changed)
-            if ($module->getProfesseur() === $this) {
-                $module->setProfesseur(null);
-            }
-        }
+        $this->modules->removeElement($module);
 
         return $this;
     }
-
-   
+    
     
 }

@@ -1,0 +1,54 @@
+<?php
+
+namespace App\Form;
+use App\Entity\Ac;
+use App\Entity\Classe;
+
+use Symfony\Component\Form\Button;
+use Symfony\Component\Form\AbstractType;
+
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\FormBuilderInterface;
+
+
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+
+
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Text;
+
+
+class ClasseType extends AbstractType
+{   
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+       ->add('libelle',null,[
+                'attr'=>[
+                    'placeholder'=>"libelle de la classe"]]) 
+    ->add('filiere',null,[
+                'attr'=>[
+          'placeholder'=>"filiere classe"]])
+            ->add('niveau',null,[
+                'attr'=>[
+                    'placeholder'=>"niveau la classe"]])
+         ->add('ac', EntityType::class,[ 
+             'class'=>Ac::class,
+         'choice_label'=>'nomComplet',
+         'placeholder'=>'attachés',
+         'label'=>'attaché de classe',
+         'multiple'=>'true'])
+
+            ->add('SOUMETTRE',
+            SubmitType::class,[
+                'attr'=>['type'=>'submit','name'=>'cre-classe','class'=>'btn btn-primary']]);
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults(['data_class' => Classe::class]);
+    }
+}

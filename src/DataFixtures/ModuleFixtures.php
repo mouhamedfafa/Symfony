@@ -10,14 +10,16 @@ class ModuleFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        // $product = new Product();
-        // $manager->persist($product);
+        $product = new Module();
+        $manager->persist($product);
         $module=['PHP','UML','MATHS','JAVA SCRIPT','ALGEBRE','ANALYSE'];
         for ($i=0; $i <5 ; $i++) { 
-            # code..
+           
+
             $mod= new Module;
-        
-            $mod->setLibelleModule("fjjoled");
+
+            $mod->setLibelleModule($module[$i]);
+            
             $manager->persist($mod);
             
         }

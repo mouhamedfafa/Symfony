@@ -21,11 +21,16 @@ class Module
     #[ORM\ManyToOne(targetEntity: Professeur::class, inversedBy: 'module')]
     private $professeur;
 
+    #[ORM\ManyToMany(targetEntity: Professeur::class, mappedBy: 'modules')]
+    private $professeurs;
+
+
 
   
     public function __construct()
     {
         $this->module = new ArrayCollection();
+        $this->professeurs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -40,7 +45,7 @@ class Module
 
     public function setLibelleModule(?string $libelleModule): self
     {
-        $this->libelleMOdule = $libelleModule;
+        $this->libelleModule = $libelleModule;
 
         return $this;
     }
@@ -57,6 +62,32 @@ class Module
         return $this;
     }
 
+    /**
+     * @return Collection<int, Professeur>
+     */
+    public function getProfesseurs(): Collection
+    {
+        return $this->professeurs;
+    }
+
+    public function addProfesseur(Professeur $professeur): self
+    {
+        if (!$this->professeurs->contains($professeur)) {
+            $this->professeurs[] = $professeur;
+            $professeur->addModule($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProfesseur(Professeur $professeur): self
+    {
+        if ($this->professeurs->removeElement($professeur)) {
+            $professeur->removeModule($this);
+        }
+
+        return $this;
+    }
 
    
 }

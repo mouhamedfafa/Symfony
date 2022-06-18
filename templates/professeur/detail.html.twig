@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ClasseController!{% endblock %}
+
+{% block body %}
+
+<h1>  
+    {{(professeur.nomComplet) }}
+  </h1>
+<p>
+ <p class="card-text">
+        <table class="table table-striped table-hover">
+            <thead class="table table-dark">
+                <th scope="col">Information</th>
+    
+            </thead>
+            <tbody>
+         <tr>
+         <td> 
+             <p> ADRESSE: {{  professeur.adresse }} <br></p>    
+             <p>NOM COMPLET: {{professeur.nomComplet}} </p>
+
+            <p>  GRADE: {{professeur.grade}}</p>
+              
+         </td> 
+        </tr>
+
+            </tbody>
+        </table>
+        </p>
+
+
+
+ <p class="card-text">
+        <table class="table table-striped table-hover">
+            <thead class="table table-dark ">
+                
+                <th scope="col">LISTE MODULES</th>
+    
+            </thead>
+            <tbody>
+                {% for prof in professeur.modules %}
+         <tr>
+    <pre>
+    </pre>
+
+
+         <td>  {{ prof.libelleModule }}</td>   
+         
+    
+        </tr>
+{% endfor %}
+            </tbody>
+        </table>
+        </p>
+
+
+
+ <p class="card-text">
+        <table class="table table-striped table-hover">
+            <thead class="table table-dark">
+                
+                <th scope="col">LISTE CLASSE</th>
+    
+            </thead>
+            <tbody>
+                {% for prof in professeur.classes %}
+         <tr>
+    <pre>
+    </pre>
+
+
+         <td>  {{ prof.libelle }}</td>   
+         
+    
+        </tr>
+{% endfor %}
+            </tbody>
+        </table>
+        </p>
+
+    
+            
+
+
+
+{% endblock %}
+
+

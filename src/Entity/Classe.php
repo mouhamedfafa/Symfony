@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Rp;
+use App\Entity\Ac;
 use App\Entity\Professeur;
 use App\Entity\Inscription;
 use Doctrine\ORM\Mapping as ORM;
@@ -27,34 +28,20 @@ class Classe
     #[ORM\Column(type: 'string', length: 255)]
     private $niveau;
 
-
-    #[ORM\ManyToOne(targetEntity: Rp::class, inversedBy: 'Rp')]
-    private $rp;
-
-    #[ORM\OneToMany(mappedBy: 'classe', targetEntity: Rp::class)]
-    private $classes;
-
-    #[ORM\ManyToMany(targetEntity: Professeur::class, inversedBy: 'profclass')]
-    private $classprof;
-
-    #[ORM\OneToMany(mappedBy: 'classe', targetEntity: Etudiant::class)]
-    private $classetu;
+    #[ORM\ManyToMany(targetEntity: Professeur::class, mappedBy: 'classes')]
+    private $professeurs;
 
     #[ORM\OneToMany(mappedBy: 'classe', targetEntity: Inscription::class)]
     private $inscriptions;
 
-    
+    #[ORM\ManyToOne(targetEntity: Rp::class, inversedBy: 'classes')]
+    private $rp;
 
     public function __construct()
     {
-        
-        $this->classes = new ArrayCollection();
         $this->professeurs = new ArrayCollection();
-        $this->classprof = new ArrayCollection();
-        $this->classetu = new ArrayCollection();
         $this->inscriptions = new ArrayCollection();
-       
-    }
+    }    
 
     public function getId(): ?int
     {
@@ -97,78 +84,28 @@ class Classe
         return $this;
     }
 
-
-
-
-    public function getRp(): ?Rp
-    {
-        return $this->rp;
-    }
-
-    public function setRp(?Rp $rp): self
-    {
-        $this->rp = $rp;
-
-        return $this;
-    }
-
- 
-
- 
-
     /**
      * @return Collection<int, Professeur>
      */
-
-    /**
-     * @return Collection<int, Professeur>
-     */
-    public function getClassprof(): Collection
+    public function getProfesseurs(): Collection
     {
-        return $this->classprof;
+        return $this->professeurs;
     }
 
-    public function addClassprof(Professeur $classprof): self
+    public function addProfesseur(Professeur $professeur): self
     {
-        if (!$this->classprof->contains($classprof)) {
-            $this->classprof[] = $classprof;
+        if (!$this->professeurs->contains($professeur)) {
+            $this->professeurs[] = $professeur;
+            $professeur->addClass($this);
         }
 
         return $this;
     }
 
-    public function removeClassprof(Professeur $classprof): self
+    public function removeProfesseur(Professeur $professeur): self
     {
-        $this->classprof->removeElement($classprof);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Etudiant>
-     */
-    public function getClassetu(): Collection
-    {
-        return $this->classetu;
-    }
-
-    public function addClassetu(Etudiant $classetu): self
-    {
-        if (!$this->classetu->contains($classetu)) {
-            $this->classetu[] = $classetu;
-            $classetu->setClasse($this);
-        }
-
-        return $this;
-    }
-
-    public function removeClassetu(Etudiant $classetu): self
-    {
-        if ($this->classetu->removeElement($classetu)) {
-            // set the owning side to null (unless already changed)
-            if ($classetu->getClasse() === $this) {
-                $classetu->setClasse(null);
-            }
+        if ($this->professeurs->removeElement($professeur)) {
+            $professeur->removeClass($this);
         }
 
         return $this;
@@ -204,8 +141,16 @@ class Classe
         return $this;
     }
 
-    
-    
-   
+    public function getRp(): ?Rp
+    {
+        return $this->rp;
+    }
+
+    public function setRp(?Rp $rp): self
+    {
+        $this->rp = $rp;
+
+        return $this;
+    }
    
 }

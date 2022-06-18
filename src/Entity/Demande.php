@@ -21,18 +21,11 @@ class Demande
     #[ORM\Column(type: 'string', length: 255)]
     private $Etat;
 
-    #[ORM\OneToOne(targetEntity: Etudiant::class, inversedBy: 'demande')]
-    private $etudiant;
+    #[ORM\ManyToOne(targetEntity: Inscription::class, inversedBy: 'demandes')]
+    private $inscription;
 
-
-
-  
-
-    public function __construct()
-    {
-        $this->demande = new ArrayCollection();
-        
-    }
+    #[ORM\ManyToOne(targetEntity: Rp::class, inversedBy: 'demandes')]
+    private $rp;
 
 
     public function getId(): ?int
@@ -64,39 +57,28 @@ class Demande
         return $this;
     }
 
-    // public function getDemande(): ?Etudiant
-    // {
-    //     return $this->demande;
-    // }
-
-    // public function setDemande(?Etudiant $demande): self
-    // {
-    //     $this->demande = $demande;
-
-    //     return $this;
-    // }
-
-    public function getEtudiant(): ?Etudiant
+    public function getInscription(): ?Inscription
     {
-        return $this->etudiant;
+        return $this->inscription;
     }
 
-    public function setEtudiant(?Etudiant $etudiant): self
+    public function setInscription(?Inscription $inscription): self
     {
-        $this->etudiant = $etudiant;
+        $this->inscription = $inscription;
 
         return $this;
     }
 
-  
+    public function getRp(): ?Rp
+    {
+        return $this->rp;
+    }
 
+    public function setRp(?Rp $rp): self
+    {
+        $this->rp = $rp;
 
-
-  
-    
-
-  
-
-   
+        return $this;
+    }
 
 }
